@@ -1,3 +1,4 @@
+from enum import unique
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import TIMESTAMP
@@ -30,6 +31,12 @@ class User(Base):
     password = Column(String, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True),
                         nullable=False, server_default=text('now()'))
+    phone_number = Column(String, nullable=True)
+    username = Column(String, nullable=False, unique=True)
+    first_name = Column(String, nullable=True)
+    last_name = Column(String, nullable=True)
+    company_name = Column(String, nullable=True)
+    location = Column(String, nullable=True)
 
 
 class Vote(Base):
