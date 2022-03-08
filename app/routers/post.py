@@ -11,6 +11,7 @@ router = APIRouter(
 )
 
 
+# Get all posts
 @router.get("/", response_model=List[schemas.PostOut])
 def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user), limit: int = 10, skip: int = 0, search: Optional[str] = ""):
 
@@ -21,6 +22,7 @@ def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.
     return posts
 
 
+# Create new post
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
 def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
@@ -32,6 +34,7 @@ def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db), curren
     return new_post
 
 
+# Get post by ID
 @router.get("/{id}", response_model=schemas.PostOut)
 def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
@@ -45,6 +48,7 @@ def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends
     return post
 
 
+# Delete post by ID
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
@@ -65,6 +69,7 @@ def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depe
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
+# Update post by ID
 @router.put("/{id}", response_model=schemas.Post)
 def update_post(id: int, updated_post: schemas.PostCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
 
