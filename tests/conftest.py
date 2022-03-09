@@ -34,7 +34,6 @@ def session():
 @pytest.fixture()
 def client(session):
     def override_get_db():
-
         try:
             yield session
         finally:
@@ -111,8 +110,8 @@ def test_posts(test_user, test_user2, session):
         "content": "third",
         "owner_id": test_user['id']
     }, {
-        "title": "third title",
-        "content": "third",
+        "title": "fourth title",
+        "content": "fourth",
         "owner_id": test_user2['id']
     }]
 
@@ -128,3 +127,47 @@ def test_posts(test_user, test_user2, session):
 
     posts = session.query(models.Post).all()
     return posts
+
+
+# Create test products and add to DB
+@pytest.fixture
+def test_products(test_user, test_user2, session):
+    products_data = [{
+        "prod_name": "first product",
+        "description": "first description",
+        "company_name": "first company",
+        "price": 1.99,
+        "owner_id": test_user['id']
+    }, {
+        "prod_name": "second product",
+        "description": "second description",
+        "company_name": "second company",
+        "price": 2.99,
+        "owner_id": test_user['id']
+    },
+        {
+        "prod_name": "third product",
+        "description": "third description",
+        "company_name": "third company",
+        "price": 3.99,
+        "owner_id": test_user['id']
+    }, {
+        "prod_name": "fourth product",
+        "description": "fourth description",
+        "company_name": "fourth company",
+        "price": 4.99,
+        "owner_id": test_user2['id']
+    }]
+
+    def create_product_model(product):
+        return models.Product(**product)
+
+    product_map = map(create_product_model, products_data)
+    products = list(product_map)
+
+    session.add_all(products)
+
+    session.commit()
+
+    products = session.query(models.Product).all()
+    return products
