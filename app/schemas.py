@@ -20,6 +20,26 @@ class PostCreate(PostBase):
     pass
 
 
+class Product(BaseModel):
+    prod_name: str
+    description: str
+    company_name: str
+    price: float
+    published: bool = True
+
+
+class ProductBase(BaseModel):
+    prod_name: str
+    description: str
+    company_name: str
+    price: float
+    published: bool = True
+
+
+class ProductCreate(ProductBase):
+    pass
+
+
 class UserOut(BaseModel):
     username: str
     email: EmailStr
@@ -41,6 +61,23 @@ class Post(PostBase):
 class PostOut(BaseModel):
     Post: Post
     votes: int
+
+    class Config:
+        orm_mode = True
+
+
+class Product(ProductBase):
+    id: int
+    created_at: datetime
+    owner_id: int
+    owner: UserOut
+
+    class Config:
+        orm_mode = True
+
+
+class ProductOut(BaseModel):
+    Product: Product
 
     class Config:
         orm_mode = True
