@@ -41,6 +41,7 @@ class ProductCreate(ProductBase):
 
 
 class UserOut(BaseModel):
+    id: int
     username: str
     email: EmailStr
 

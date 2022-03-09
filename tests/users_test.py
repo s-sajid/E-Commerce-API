@@ -6,13 +6,14 @@ from app.config import settings
 
 def test_create_user(client):
     res = client.post(
-        "/users/", json={"email": "test@gmail.com", "password": "test_password"})
+        "/users/", json={"email": "test@gmail.com", "password": "test_password", "username": "test"})
 
     new_user = schemas.UserOut(**res.json())
 
     assert new_user.email == "test@gmail.com"
+    assert new_user.username == "test"
     assert res.status_code == 201
-
+    
 
 def test_login_user(client, test_user):
     res = client.post(
